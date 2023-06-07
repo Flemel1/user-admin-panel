@@ -10,7 +10,6 @@ export const StyledBurgerButton = styled('button', {
    'display': 'flex',
    'flexDirection': 'column',
    'justifyContent': 'space-around',
-
    'width': '22px',
    'height': '22px',
    'background': 'transparent',

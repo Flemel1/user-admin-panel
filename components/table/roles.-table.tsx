@@ -1,17 +1,16 @@
 import { Table } from "@nextui-org/react"
 import { Box } from "../styles/box"
-import { columns } from "./data"
-import { RenderCell } from "./render-cell"
-import type { UserPagination } from "../../utils/interfaces"
+import { roleColumns, roles } from "./data"
+import { RenderRoleCell } from "./render-role-cell"
+import { RolePagination } from "../../utils/interfaces"
 import { useAppDispatch } from "../../utils/hooks"
-import { changePage } from "../../redux/user-slice"
+import { changePage } from "../../redux/role-slice"
 
 interface Props {
-  data: UserPagination | null
+  data: RolePagination | null
 }
 
-export const TableWrapper = ({ data }: Props) => {
-
+export const TableRoles = ({ data }: Props) => {
   const dispatch = useAppDispatch()
   return (
     <Box
@@ -31,7 +30,7 @@ export const TableWrapper = ({ data }: Props) => {
           px: 0,
         }}
       >
-        <Table.Header columns={columns}>
+        <Table.Header columns={roleColumns}>
           {(column) => (
             <Table.Column
               key={column.uid}
@@ -44,11 +43,9 @@ export const TableWrapper = ({ data }: Props) => {
         </Table.Header>
         <Table.Body items={data?.data}>
           {(item) => (
-            <Table.Row>
+            <Table.Row key={item.role_name}>
               {(columnKey) => (
-                <Table.Cell>
-                  {RenderCell({ user: item, columnKey: columnKey })}
-                </Table.Cell>
+                <Table.Cell>{RenderRoleCell({ role: item })}</Table.Cell>
               )}
             </Table.Row>
           )}

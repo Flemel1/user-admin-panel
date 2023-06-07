@@ -2,23 +2,23 @@ import { Button, Divider, Input, Modal, Radio, Text } from "@nextui-org/react"
 import { Form, Formik } from "formik"
 import { useEffect, useState } from "react"
 import * as Yup from "yup"
-import { createdUser } from "../../redux/user-slice"
+import { createdUser, updatedUser } from "../../redux/user-slice"
 import { fetchRoles } from "../../services/role-service"
 import { useAppDispatch } from "../../utils/hooks"
-import type { Role, UserForm } from "../../utils/interfaces"
+import type { EditUserProps, Role, UserForm } from "../../utils/interfaces"
 import { Flex } from "../styles/flex"
 
-export const AddUser = () => {
+export const EditUser = ({ user }: EditUserProps) => {
   const [visible, setVisible] = useState(false)
   const [roles, setRoles] = useState<Role[]>([])
   const dispatch = useAppDispatch()
   const initialValues: UserForm = {
-    email: "",
-    birthday: "",
-    name: "",
-    role_name: "",
-    sex: "",
-    address: "",
+    email: user.email,
+    birthday: user.birthday,
+    name: user.name,
+    role_name: user.role.role_name,
+    sex: user.sex,
+    address: user.address,
   }
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Required"),
@@ -46,7 +46,7 @@ export const AddUser = () => {
   return (
     <div>
       <Button auto onClick={handler}>
-        Add User
+        Update User
       </Button>
       <Modal
         closeButton
@@ -66,7 +66,7 @@ export const AddUser = () => {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={async (values: UserForm) => {
-              await dispatch(createdUser(values))
+              await dispatch(updatedUser({ dataForm: values, id: user.id }))
             }}
           >
             {({
@@ -102,6 +102,7 @@ export const AddUser = () => {
                         size="lg"
                         placeholder="Name"
                         name="name"
+                        value={values.name}
                         onBlur={handleBlur}
                         onChange={handleChange}
                       />
@@ -119,6 +120,7 @@ export const AddUser = () => {
                         placeholder="Email"
                         type="email"
                         name="email"
+                        value={values.email}
                         onBlur={handleBlur}
                         onChange={handleChange}
                       />
@@ -144,6 +146,7 @@ export const AddUser = () => {
                         size="lg"
                         placeholder="Address"
                         name="address"
+                        value={values.address}
                         onBlur={handleBlur}
                         onChange={handleChange}
                       />
@@ -160,6 +163,7 @@ export const AddUser = () => {
                         placeholder="Birthday"
                         name="birthday"
                         type="date"
+                        value={values.birthday}
                         onBlur={handleBlur}
                         onChange={handleChange}
                       />
@@ -217,7 +221,7 @@ export const AddUser = () => {
                 </Flex>
                 <Divider css={{ my: "$5" }} />
                 <Button auto type="submit">
-                  Add User
+                  Update User
                 </Button>
               </Form>
             )}
